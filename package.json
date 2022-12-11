@@ -1,0 +1,22 @@
+{
+  "name": "node_home_task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "8000",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AngelicaMDuqueC/node_home_task.git"
+  },
+  "author": "Angelica Maria Duque",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AngelicaMDuqueC/node_home_task/issues"
+  },
+  "homepage": "https://github.com/AngelicaMDuqueC/node_home_task#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
