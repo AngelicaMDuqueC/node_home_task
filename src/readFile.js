@@ -13,15 +13,15 @@ csv()
     txtfile.write(JSON.stringify(json, null, 4));
   })
   .on('error', (error) => {
-    throw Error(`Error reading CSV file: ${error.message}`)
+    throw new Error(`Error reading CSV file: ${error.message}`)
   })
 
 readStreamCvs
   .on('error', (error) => {
-      throw Error(`Error reading CSV file: ${error.message}`)
+      throw new Error(`Error reading CSV file: ${error.message}`)
   })
 
 writeStream
   .on('error', (error) => {
-      throw Error(`Error reading CSV file: ${error.message}`)
+      throw new Error(`Error reading CSV file: ${error.message}`)
   })
