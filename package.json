@@ -5,7 +5,8 @@
   "main": "8000",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "task2": "nodemon --exec node_modules/.bin/babel-node src/readFile"
+    "task2": "nodemon --exec node_modules/.bin/babel-node src/readFile",
+    "task1": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
