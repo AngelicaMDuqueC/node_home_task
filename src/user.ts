@@ -1,12 +1,9 @@
-
 type User = {
   id: number;
   login: string;
-  password:string;
-  age:number;
-  isDeleted:boolean;
-}
+  password: string;
+  age: number;
+  isDeleted: boolean;
+};
 
-
-const users: Array<User> = []
-
+const users: Array<User> = [];
