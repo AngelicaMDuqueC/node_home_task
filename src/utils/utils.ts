@@ -1,10 +1,4 @@
-export type User = {
-  id: string;
-  login: string;
-  password: string;
-  age: number;
-  isDeleted: boolean;
-};
+import { User } from "types";
 
 export const changePassword = (password: string): string => {
   return Array(password.length).join("*");
