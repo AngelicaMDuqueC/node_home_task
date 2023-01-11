@@ -1,13 +1,12 @@
-import { Client } from "pg";
+import { Sequelize } from "sequelize";
 import { env } from "process";
 import dotenv from "dotenv";
 dotenv.config();
 
-const { POSTGRES_URL } = env;
-export const client = new Client(POSTGRES_URL);
+const { POSTGRES_URL = "" } = env;
+const sequelize = new Sequelize(POSTGRES_URL, {
+  host: "localhost",
+  dialect: "postgres",
+});
 
-client.connect();
-
-export const db = (text: string, params?: any[]) => {
-  return client.query(text, params);
-};
+export default sequelize;
