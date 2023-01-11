@@ -1,28 +1,36 @@
 import { Request, Response, Router } from "express";
-import { validations, changePassword } from "../utils";
+import { validations } from "../utils";
 import { checkSchema } from "express-validator";
-import { db } from "../config";
+import {
+  getUserById,
+  getAllUsers,
+  updateUser,
+  deleteUser,
+} from "../data-access/user";
 
 const router = Router();
 
 router.get("/users", async (req: Request, res: Response) => {
-  const query = `
-  SELECT * FROM usertable
-  ORDER BY id;
-  `;
-  const { rows } = await db(query);
-  res.json(rows);
+  try {
+    const users = await getAllUsers();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 router.get("/users/:id", async (req: Request, res: Response) => {
-  const query = `
-  SELECT * FROM usertable
-    WHERE id=$1;
-    `;
-
-  const values = [req.params.id];
-  const { rows } = await db(query, values);
-  res.send(rows);
+  const id = Number(req.params.id);
+  try {
+    const user = await getUserById(id);
+    if (!user) {
+      res.status(404).send({ message: "User not found" });
+      return;
+    }
+    res.status(200).send(user);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
 });
 
 router.use((req: Request, res: Response, next) => {
@@ -38,41 +46,34 @@ router.put(
   "/users/:id",
   checkSchema(validations),
   async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const { login, password, age } = req.body;
-    let sql = "UPDATE usertable";
-    const values = [];
-    if (login) {
-      sql += "login = ?, ";
-      values.push(login);
+    const userId = Number(req.params.id);
+    const updates = req.body;
+    try {
+      const user = await updateUser(userId, updates);
+      if (!user) {
+        res.status(404).send({ message: "User not found" });
+        return;
+      }
+      console.log(user);
+      res.status(200).send({ message: "User updated successfully", user });
+    } catch (err) {
+      res.status(500).send({ message: err.message });
     }
-    if (password) {
-      sql += "password = ?, ";
-      values.push(password);
-    }
-    if (age) {
-      sql += "age = ?, ";
-      values.push(age);
-    }
-
-    sql = sql.slice(0, -2);
-    sql += " WHERE id = ?";
-    values.push(id);
-    const { rows } = await db(sql, values);
-    const copyUser = { ...rows, password: changePassword(password) };
-    res.send(copyUser);
   }
 );
 
 router.delete("/users/:id", async (req: Request, res: Response) => {
-  const query = ` 
-    DELETE FROM Note
-    WHERE id=$1
-    RETURNING *;
-    `;
-  const values = [req.params.id];
-  const result = await db(query, values);
-  console.log(result);
+  const userId = Number(req.params.id);
+  try {
+    const affectedRows = await deleteUser(userId);
+    if (!affectedRows) {
+      res.status(404).send({ message: "User not found" });
+      return;
+    }
+    res.status(200).send({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
   res.redirect("/users");
 });
 
