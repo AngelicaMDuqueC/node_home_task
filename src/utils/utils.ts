@@ -44,7 +44,6 @@ export const validations = {
     },
   },
   age: {
-    isInit: true,
     errorMessage: "Age must be a number",
     isInt: {
       options: { min: 4, max: 130 },

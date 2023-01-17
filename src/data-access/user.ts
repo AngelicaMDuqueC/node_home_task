@@ -1,7 +1,7 @@
 import UserModel from "../models/user";
 import { User } from "types";
 
-export const createUser = async (userData: User) => {
+export const setUserCreation = async (userData: User) => {
   return UserModel.create(userData);
 };
 
