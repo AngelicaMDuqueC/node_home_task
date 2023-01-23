@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import sequelize from "../config/database";
+import sequelize from "../../src/config/database";
 
 class UserModel extends Model {
   public id!: number;
@@ -19,6 +19,7 @@ UserModel.init(
     login: {
       type: new DataTypes.STRING(25),
       allowNull: false,
+      unique: true,
     },
     password: {
       type: new DataTypes.STRING(8),
@@ -29,6 +30,10 @@ UserModel.init(
       allowNull: false,
     },
     createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },

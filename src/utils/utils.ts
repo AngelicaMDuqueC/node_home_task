@@ -1,10 +1,12 @@
 import { User } from "types";
+import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 
 export const changePassword = (password: string): string => {
   return Array(password.length).join("*");
 };
 
-export const getUser = (users: User[], reqId: string): User | undefined => {
+export const getUser = (users: User[], reqId: number): User | undefined => {
   return users.find((u) => u.id === reqId);
 };
 
@@ -50,4 +52,44 @@ export const validations = {
       errorMessage: "Age must be between 4 and 130",
     },
   },
+};
+
+export enum statusCode {
+  success = 200,
+  error = 500,
+  notFount = 404,
+  required = 417,
+  validationError = 400,
+  created = 201,
+}
+
+export enum codeMessage {
+  userSuccess = "Success",
+  itemNotFound = "item not found",
+  UserDeleted = "User deleted successfully",
+  UserUpdated = "User updated successfully",
+  fieldsRequired = "all fields are required",
+}
+
+export const dataValidation = <T>(res: Response, userItem: T): void => {
+  if (!userItem) {
+    res.status(statusCode.notFount).send({ message: codeMessage.itemNotFound });
+    return;
+  }
+  if (typeof userItem === "string") {
+    res.status(statusCode.success).send({ message: userItem });
+    return;
+  }
+  res
+    .status(statusCode.success)
+    .send({ message: codeMessage.userSuccess, userObject: userItem });
+  return;
+};
+
+export const handleValidationRequest = (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(statusCode.validationError).send({ errors: errors.array() });
+    throw new Error("Validation Error");
+  }
 };

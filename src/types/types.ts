@@ -1,7 +1,10 @@
 export type User = {
-  id: string;
+  id: number;
   login: string;
   password: string;
   age: number;
-  isDeleted: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
+
+export type UserResp = User | User[] | null;
