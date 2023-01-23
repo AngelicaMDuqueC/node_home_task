@@ -4,11 +4,10 @@ import { checkSchema } from "express-validator";
 import {
   getUsers,
   getUserById,
-  validateUser,
   updateUserById,
   createUser,
   deleteUser,
-} from "../controller/controller";
+} from "../controllers/userController";
 
 const router = express.Router();
 
@@ -19,7 +18,6 @@ export const routes = (app: Express) => {
   router.get("/users/:id", getUserById);
   // Delete a Tutorial with id
   router.delete("/users/:id", deleteUser);
-  app.use(validateUser);
   // create user
   router.post("/users", checkSchema(validations), createUser);
   // Update a user with id
